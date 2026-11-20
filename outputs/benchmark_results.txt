@@ -1,0 +1,46 @@
+======================================================================
+CORRECTNESS TESTS
+======================================================================
+[Merge sort]  matches built-in sorted() on 5 test sizes ........ PASS
+[Knapsack DP] equals brute-force optimum on 30 random cases ..... PASS
+[Dijkstra]    equals Floyd-Warshall on 10 random graphs ......... PASS
+[NN-TSP]      tour length / optimal tour (20 cases, 6 stops): avg 1.071, worst 1.203, never below 1.0: PASS
+
+======================================================================
+RUNTIME SCALING (milliseconds, best of 3)
+======================================================================
+
+Sorting parcels      n    MergeSort   InsertionSort   built-in sorted
+                    100        0.09            0.26             0.013
+                    500        0.52            5.01             0.065
+                   1000        1.38           21.14             0.160
+                   2000        2.92           82.64             0.313
+                   4000        5.73          328.58             0.766
+
+Knapsack DP     (n parcels, W capacity)   cells=n*W    time(ms)
+                         50 x  100              5000        0.27
+                        100 x  200             20000        1.07
+                        200 x  400             80000        4.38
+                        400 x  800            320000       22.56
+
+Dijkstra (single source)   V vertices   time(ms)
+                               100        0.05
+                               500        0.28
+                              1000        0.68
+                              2000        1.62
+                              4000        5.58
+
+NN-TSP on 500-node graph   k stops   time(ms)   (includes k+1 Dijkstra runs)
+                                 5        1.87
+                                10        3.62
+                                20        6.75
+                                40       14.98
+                                80       33.54
+
+======================================================================
+FULL PIPELINE: SMALL vs LARGE DATASET
+======================================================================
+small:   10 parcels,  10 nodes, capacity  20 kg | loaded   4 parcels (20 kg, score 128) |   3 stops, route 30 km
+       sort     0.04 ms | knapsack     0.06 ms | route (Dijkstra+NN)     0.14 ms
+large: 1000 parcels, 500 nodes, capacity 150 kg | loaded  82 parcels (150 kg, score 2349) |  75 stops, route 1084 km
+       sort     1.19 ms | knapsack    10.56 ms | route (Dijkstra+NN)    37.69 ms

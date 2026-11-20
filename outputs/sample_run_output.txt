@@ -1,0 +1,37 @@
+
+=== STEP 1: PARCELS SORTED (earliest deadline, then highest priority) ===
+   P8(w=9kg, pr=10, dl=2h, score=40, node=6)
+   P2(w=8kg, pr=6, dl=2h, score=36, node=5)
+   P4(w=6kg, pr=4, dl=3h, score=31, node=2)
+   P1(w=5kg, pr=8, dl=4h, score=32, node=3)
+   P10(w=3kg, pr=5, dl=4h, score=29, node=3)
+   P6(w=7kg, pr=5, dl=5h, score=26, node=4)
+   P3(w=3kg, pr=9, dl=6h, score=27, node=7)
+   P9(w=5kg, pr=6, dl=7h, score=21, node=1)
+   P5(w=4kg, pr=7, dl=8h, score=19, node=9)
+   P7(w=2kg, pr=3, dl=10h, score=9, node=8)
+
+=== STEP 2: KNAPSACK (capacity = 20 kg) ===
+  Best total score    : 128
+  Total weight loaded : 20 kg
+  Selected parcels    : ['P8', 'P1', 'P10', 'P3']
+  Left for next trip  : ['P2', 'P4', 'P6', 'P9', 'P5', 'P7']
+
+=== STEP 3: ROUTE (Dijkstra + Nearest-Neighbour TSP) ===
+  Stop order      : 0 -> 3 -> 6 -> 7 -> 0
+  Full road path  : 0 -> 3 -> 6 -> 7 -> 4 -> 3 -> 0
+  Total distance  : 30.0 km
+
+--- DP table  dp[i][w]  (rows = parcels considered, cols = capacity) ---
+           0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20
+  none     0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    P8     0   0   0   0   0   0   0   0   0  40  40  40  40  40  40  40  40  40  40  40  40
+    P2     0   0   0   0   0   0   0   0  36  40  40  40  40  40  40  40  40  76  76  76  76
+    P4     0   0   0   0   0   0  31  31  36  40  40  40  40  40  67  71  71  76  76  76  76
+    P1     0   0   0   0   0  32  32  32  36  40  40  63  63  68  72  72  72  76  76  99 103
+   P10     0   0   0  29  29  32  32  32  61  61  61  65  69  69  92  92  97 101 101 101 105
+    P6     0   0   0  29  29  32  32  32  61  61  61  65  69  69  92  92  97 101 101 101 105
+    P3     0   0   0  29  29  32  56  56  61  61  61  88  88  88  92  96  97 119 119 124 128
+    P9     0   0   0  29  29  32  56  56  61  61  61  88  88  88  92  96 109 119 119 124 128
+    P5     0   0   0  29  29  32  56  56  61  61  75  88  88  88  92 107 109 119 119 124 128
+    P7     0   0   9  29  29  38  56  56  65  65  75  88  88  97  97 107 109 119 119 128 128
